@@ -1,0 +1,25 @@
+.arsButton {
+    margin: 20px;
+    width: 10rem ;
+    letter-spacing: 1px;
+    font-weight: 100 !important;
+    color: #fff !important;
+}
+
+.arsButton:hover{
+    color: black !important;
+}
+
+.btnBasic{
+    color: #fff;
+    margin: 20px;
+    width: 10rem ;
+    letter-spacing: 1px;
+
+}
+
+.btnToCenter {
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+}

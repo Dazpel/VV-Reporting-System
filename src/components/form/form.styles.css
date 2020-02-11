@@ -1,0 +1,29 @@
+
+#mainGrid {
+   
+    align-items: center;
+    padding: 1rem;
+    box-shadow: 0px 0px 8px 0px black;
+    margin: auto;
+}
+
+label {
+    margin-left: 5px;
+    font-size: 18px !important;
+}
+
+input, select {
+    text-align: center;
+}
+
+form {
+    display: grid;
+    max-width:960px;
+    margin: auto;
+   
+}
+
+.formTitle {
+    grid-column: span 2;
+    text-align: center;
+}

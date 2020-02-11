@@ -1,0 +1,13 @@
+  .arsTitle{
+    text-align: center;
+    color: #fff;
+    letter-spacing: 4px;
+    margin-top: 50px;
+  }
+  
+  
+  .homeCenter {
+    display: flex;
+    justify-items: center;
+    justify-content: center;
+  }
