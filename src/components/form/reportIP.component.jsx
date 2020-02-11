@@ -10,13 +10,13 @@ import {
   Text,
   Textarea
 } from '@chakra-ui/core';
-import dayjs from 'dayjs';
+//import dayjs from 'dayjs';
 import './form.styles.css';
 import ButtonSucess from '../button/buttonSuccess.component';
 import '../button/button.styles.css';
 import './form.styles.css';
-var uniqid = require('uniqid');
-let currentDate = dayjs().format();
+//var uniqid = require('uniqid');
+//let currentDate = dayjs().format();
 
 export default class reportIP extends Component {
   documentData;
