@@ -70,7 +70,7 @@ export default class reportIP extends Component {
     }
 
     return (
-      <Box marginTop="5px">
+      <Box margin="2rem">
         <form onSubmit={this.handleFormSubmit} id="personalInjury">
           <FormControl>
             <SimpleGrid
