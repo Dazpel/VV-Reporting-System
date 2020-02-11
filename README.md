@@ -1,5 +1,5 @@
-### Offline / Online Reportin System for Virgin Voyages
+## Offline / Online Reportin System for Virgin Voyages
 
-## On development
+### On development
 
-### Using: React, Chackra UI, Uniqid, dayjs
+# Using: React, Chackra UI, Uniqid, dayjs
