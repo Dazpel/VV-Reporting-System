@@ -27,3 +27,9 @@ form {
     grid-column: span 2;
     text-align: center;
 }
+
+.formCenter {
+    display: flex;
+    justify-items: center;
+    justify-content: center;
+  }

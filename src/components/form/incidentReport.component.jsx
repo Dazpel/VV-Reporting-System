@@ -18,7 +18,7 @@ import './form.styles.css';
 //var uniqid = require('uniqid');
 //let currentDate = dayjs().format();
 
-export default class reportIP extends Component {
+export default class incidentReport extends Component {
   documentData;
 
   constructor(props) {

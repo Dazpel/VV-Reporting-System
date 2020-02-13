@@ -24,9 +24,9 @@ export default function Home() {
               label="This option saves data locally in the browser. OFFLINE MODE"
               placement="bottom"
             >
-              <Link to="/Form">
+              <Link to="/Directory">
                 <Button className="btnBasic" variantColor="red" fontSize="14px">
-                  Go to Form
+                  Create new Report
                 </Button>
               </Link>
             </Tooltip>
@@ -44,7 +44,7 @@ export default function Home() {
                   variantColor="blue"
                   fontSize="14px"
                 >
-                   Go to Form
+                   Create new Report
                 </Button>
               </Link>
             </Tooltip>
