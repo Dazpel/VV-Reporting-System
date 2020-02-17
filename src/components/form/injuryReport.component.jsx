@@ -98,6 +98,12 @@ export default class injuryReport extends Component {
                   Date and Time this injury happened
                 </FormLabel>
                 <SimpleGrid width="100%" columns={2}>
+                <Input
+                    type="date"
+                    name="f3a"
+                    placeholder="name"
+                    onChange={this.handleChange}
+                  />
                   <Input
                     marginLeft="5px"
                     type="time"

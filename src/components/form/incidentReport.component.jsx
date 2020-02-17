@@ -15,7 +15,10 @@ import './form.styles.css';
 import ButtonSucess from '../button/buttonSuccess.component';
 import '../button/button.styles.css';
 import './form.styles.css';
-//var uniqid = require('uniqid');
+import allegationArray from '../api/data.component';
+import extraAllegationArray from '../api/filterData.component';
+
+var uniqid = require('uniqid');
 //let currentDate = dayjs().format();
 
 export default class incidentReport extends Component {
@@ -26,18 +29,52 @@ export default class incidentReport extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.clearState = this.clearState.bind(this);
+
+    this.state = {
+      mainAllegation: '',
+      specificAllegation: ''
+    };
   }
 
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
     console.log(e.target.name, e.target.value);
   };
+
+  handleChangeChoice = e => {
+    this.handleChange(e);
+
+    switch (e.target.name) {
+      case 'f7':
+        if (
+          e.target.value === 'Missing Person' ||
+          'Sexual Assault' ||
+          'Sexual Assault - Rape' ||
+          'Sexual Touching'
+        ) {
+          this.setState({ mainAllegation: e.target.value });
+          this.setState({ specificAllegation: e.target.value });
+        } else {
+          this.setState({ mainAllegation: e.target.value });
+        }
+
+        break;
+      case 'f8':
+        this.setState({ specificAllegation: e.target.value });
+        break;
+
+      default:
+        break;
+    }
+  };
+
   // on form submit...
   handleFormSubmit(e) {
     e.preventDefault();
 
-    //var key = uniqid();
-    //console.log(key);
+    var key = uniqid();
+    console.log(key);
+
     localStorage.setItem('document', JSON.stringify(this.state));
     //alert("Form key identifier is: "+ key + ".  Use this identifier if you want to retrieve this data later");
     //document.getElementById('personalInjury').reset();
@@ -69,6 +106,25 @@ export default class incidentReport extends Component {
       window.print();
     }
 
+    function checkState(state) {
+      let checkMe = [
+        'Counterfeit Currency Fraud',
+        'Missing Person',
+        'Sexual Assault',
+        'Sexual Assault - Rape',
+        'Sexual Touching'
+      ];
+
+      let a = '';
+
+      console.log(checkMe.indexOf(state));
+      checkMe.indexOf(state) !== -1 ? (a = true) : (a = false);
+
+      return a;
+    }
+
+    let allegationInputs = [];
+
     return (
       <Box margin="2rem">
         <form onSubmit={this.handleFormSubmit} id="personalInjury">
@@ -81,7 +137,7 @@ export default class incidentReport extends Component {
               bg="white"
             >
               <Text fontSize="3xl" className="formTitle">
-                Personal Injury Report
+                Incident Report
               </Text>
               <Box>
                 <FormLabel htmlFor="f2">Name of Ship</FormLabel>
@@ -94,10 +150,14 @@ export default class incidentReport extends Component {
                 </Select>
               </Box>
               <Box>
-                <FormLabel htmlFor="f3">
-                  Date and Time this injury happened
-                </FormLabel>
+                <FormLabel htmlFor="f3">Date and Time of Incident:</FormLabel>
                 <SimpleGrid width="100%" columns={2}>
+                  <Input
+                    type="date"
+                    name="f3a"
+                    placeholder="name"
+                    onChange={this.handleChange}
+                  />
                   <Input
                     marginLeft="5px"
                     type="time"
@@ -109,27 +169,18 @@ export default class incidentReport extends Component {
               </Box>
               <Box>
                 <FormLabel htmlFor="f4">
-                  Date and Time this injury was reported
+                  Date incident was reported on
                 </FormLabel>
-                <SimpleGrid width="100%" columns={2}>
-                  <Input
-                    type="date"
-                    name="f4a"
-                    placeholder="name"
-                    onChange={this.handleChange}
-                  />
 
-                  <Input
-                    marginLeft="5px"
-                    type="time"
-                    name="f4b"
-                    placeholder="name"
-                    onChange={this.handleChange}
-                  />
-                </SimpleGrid>
+                <Input
+                  type="date"
+                  name="f4a"
+                  placeholder="name"
+                  onChange={this.handleChange}
+                />
               </Box>
               <Box>
-                <FormLabel htmlFor="f5">Injury first reported by</FormLabel>
+                <FormLabel htmlFor="f5">Incident reported by</FormLabel>
                 <Select name="f5" onChange={this.handleChange}>
                   <option value="0" isDisabled>
                     Please select...
@@ -139,10 +190,9 @@ export default class incidentReport extends Component {
                   <option value="Vendor">Vendor</option>
                 </Select>
               </Box>
+
               <Box>
-                <FormLabel htmlFor="f6">
-                  Person completing this report:
-                </FormLabel>
+                <FormLabel htmlFor="f6">Person entering this report:</FormLabel>
                 <SimpleGrid width="100%" columns={3}>
                   <Input
                     name="f6a"
@@ -164,223 +214,75 @@ export default class incidentReport extends Component {
                 </SimpleGrid>
               </Box>
               <Box>
-                <FormLabel htmlFor="f7">Personal Injury Category</FormLabel>
-                <Select name="f7" onChange={this.handleChange}>
+                <FormLabel htmlFor="f7">Main allegation category</FormLabel>
+                <Select
+                  name="f7"
+                  onChange={e => {
+                    this.handleChange(e);
+                    this.handleChangeChoice(e);
+                  }}
+                >
                   <option value="0" isDisabled>
                     Please select...
                   </option>
-                  <option value="Crew">Passenger</option>
-                  <option value="Passenger">Crew</option>
-                  <option value="Vendor">Other</option>
+                  <option value="Physical Security">Physical Security</option>
+                  <option value="Crew Conduct Policy Violation">
+                    Crew Conduct Policy Violation
+                  </option>
+                  <option value="Crime">Crime</option>
+                  <option value="Missing Person">Missing Person</option>
+                  <option value="Self Destructive Threat">
+                    Self Destructive Threat
+                  </option>
+                  <option value="Passenge Conduct Violation">
+                    Passenge Conduct Violation
+                  </option>
+                  <option value="Death">Death</option>
                 </Select>
               </Box>
+
+
               <Box>
-                <FormLabel htmlFor="f8">Personal Injury Category</FormLabel>
-                <Select name="f8" onChange={this.handleChange}>
+                <FormLabel htmlFor="f8">Specific Incident Allegation</FormLabel>
+                <Select
+                  name="f8"
+                  onChange={e => {
+                    this.handleChange(e);
+                    this.handleChangeChoice(e);
+                  }}
+                >
                   <option value="0" isDisabled>
                     Please select...
                   </option>
-                  <option value="Public Pax Area">Public Pax Area</option>
-                  <option value="Crew Area">Crew Area</option>
-                  <option value="Pax \ Crew Cabin">Pax \ Crew Cabin</option>
-                  <option value=" Ashore">Ashore</option>
-                  <option value="Other">Other</option>
+                  {allegationArray(this.state.mainAllegation).map((x, y) => (
+                    <option key={y}>{x}</option>
+                  ))}
                 </Select>
               </Box>
+
+
+
+              {checkState(this.state.specificAllegation)
+                ? ((allegationInputs = extraAllegationArray(
+                    this.state.specificAllegation
+                  )),
+                  allegationInputs.map((x, y) => (
+                    <Box key={y}>
+                      <FormLabel htmlFor={y + 'a'}>{x}</FormLabel>
+                      <Input
+                        name={y + 'a'}
+                        placeholder={x}
+                        onChange={this.handleChange}
+                      />
+                    </Box>
+                  )))
+                : console.log('Nothing Here')}
+
+
+
               <Box>
-                <FormLabel htmlFor="f9">Level of Incident</FormLabel>
+                <FormLabel htmlFor="f9">Ship Location</FormLabel>
                 <Select name="f9" onChange={this.handleChange}>
-                  <option value="0" isDisabled>
-                    Please select...
-                  </option>
-                  <option value="Minor">Minor</option>
-                  <option value="Moderate">Moderate</option>
-                  <option value="Serious">Serious</option>
-                </Select>
-              </Box>
-              <Box>
-                <FormLabel htmlFor="f10">Specific Incident Location</FormLabel>
-                <Input
-                  name="f11"
-                  placeholder="eg. Shower inside crew cabin 23341"
-                  onChange={this.handleChange}
-                />
-              </Box>
-              <Box>
-                <FormLabel htmlFor="f12">
-                  Did the incident involve any Equipment
-                </FormLabel>
-                <Select name="f13" onChange={this.handleChange}>
-                  <option value="0" isDisabled>
-                    Please select...
-                  </option>
-                  <option value="Yes">Yes</option>
-                  <option value="No">No</option>
-                </Select>
-              </Box>
-              <Box>
-                <FormLabel htmlFor="f14">
-                  Condition of the Equipment involved
-                </FormLabel>
-                <Textarea
-                  name="f14"
-                  onChange={this.handleChange}
-                  placeholder="Describe current state of equipment"
-                />
-              </Box>
-              <Box>
-                <FormLabel htmlFor="f15">
-                  Does this equipment require regular inspection?
-                </FormLabel>
-                <Select name="f15" onChange={this.handleChange}>
-                  <option value="0" isDisabled>
-                    Please select...
-                  </option>
-                  <option value="Yes">Yes</option>
-                  <option value="No">No</option>
-                </Select>
-              </Box>
-              <Box>
-                <FormLabel htmlFor="f16">
-                  Person in charge of this inspetion
-                </FormLabel>
-                <SimpleGrid width="100%" columns={2}>
-                  <Input
-                    name="f17a"
-                    placeholder="name"
-                    onChange={this.handleChange}
-                  />
-                  <Input
-                    marginLeft="5px"
-                    name="f17b"
-                    placeholder="position"
-                    onChange={this.handleChange}
-                  />
-                </SimpleGrid>
-              </Box>
-              <Box>
-                <FormLabel htmlFor="f18">Date of last inspection</FormLabel>
-                <Input
-                  type="date"
-                  marginLeft="5px"
-                  name="f18"
-                  placeholder="position"
-                  onChange={this.handleChange}
-                />
-              </Box>
-              <Box>
-                <FormLabel htmlFor="f19">
-                  Does this equipment require regular maintenance?
-                </FormLabel>
-                <Select name="f19" onChange={this.handleChange}>
-                  <option value="0" isDisabled>
-                    Please select...
-                  </option>
-                  <option value="Yes">Yes</option>
-                  <option value="No">No</option>
-                </Select>
-              </Box>
-              <Box>
-                <FormLabel htmlFor="f20">
-                  Person in charge of Maintenance:
-                </FormLabel>
-                <SimpleGrid width="100%" columns={3}>
-                  <Input
-                    name="f20a"
-                    placeholder="first name"
-                    onChange={this.handleChange}
-                  />
-                  <Input
-                    marginLeft="5px"
-                    name="f20b"
-                    placeholder="last name"
-                    onChange={this.handleChange}
-                  />
-                  <Input
-                    marginLeft="10px"
-                    name="f20b"
-                    placeholder="position"
-                    onChange={this.handleChange}
-                  />
-                </SimpleGrid>
-              </Box>
-              <Box>
-                <FormLabel htmlFor="f21">
-                  Date maintenance was last performed:
-                </FormLabel>
-                <Input
-                  type="date"
-                  marginLeft="5px"
-                  name="f21"
-                  placeholder="position"
-                  onChange={this.handleChange}
-                />
-              </Box>
-              <Box>
-                <FormLabel htmlFor="f22">
-                  Did the incident involve any alcohol\drugs
-                </FormLabel>
-                <Select name="f22" onChange={this.handleChange}>
-                  <option value="0" isDisabled>
-                    Please select...
-                  </option>
-                  <option value="Yes">Yes</option>
-                  <option value="No">No</option>
-                </Select>
-              </Box>
-              <Box>
-                <FormLabel htmlFor="f23">Deck Surface</FormLabel>
-                <Select name="f23" onChange={this.handleChange}>
-                  <option value="0" isDisabled>
-                    Please select...
-                  </option>
-                  <option value="Metal">Metal</option>
-                  <option value="Wood">Wood</option>
-                  <option value="Carpet">Carpet</option>
-                  <option value="Marble">Marble</option>
-                  <option value="Stone">Stone</option>
-                  <option value="Concrete">Concrete</option>
-                  <option value="Other">Other</option>
-                </Select>
-              </Box>
-              <Box>
-                <FormLabel htmlFor="f24">Conditions of the Deck</FormLabel>
-                <Select name="f24" onChange={this.handleChange}>
-                  <option value="0" isDisabled>
-                    Please select...
-                  </option>
-                  <option value="Dry">Dry</option>
-                  <option value="Wet">Wet</option>
-                  <option value="Other">Other</option>
-                </Select>
-              </Box>
-              <Box>
-                <FormLabel htmlFor="f25">
-                  Person in charge of the incident location:
-                </FormLabel>
-                <SimpleGrid width="100%" columns={3}>
-                  <Input
-                    name="f25a"
-                    placeholder="first name"
-                    onChange={this.handleChange}
-                  />
-                  <Input
-                    marginLeft="5px"
-                    name="f25b"
-                    placeholder="last name"
-                    onChange={this.handleChange}
-                  />
-                  <Input
-                    marginLeft="10px"
-                    name="f25c"
-                    placeholder="position"
-                    onChange={this.handleChange}
-                  />
-                </SimpleGrid>
-              </Box>
-              <Box>
-                <FormLabel htmlFor="f26">Ship Location</FormLabel>
-                <Select name="f26" onChange={this.handleChange}>
                   <option value="0" isDisabled>
                     Please select...
                   </option>
@@ -389,36 +291,136 @@ export default class incidentReport extends Component {
                 </Select>
               </Box>
               <Box>
-                <FormLabel htmlFor="f27">
-                  Sea Conditions at the time of incident:
-                </FormLabel>
+                <FormLabel htmlFor="f10">Specific Location</FormLabel>
                 <Input
-                  marginLeft="5px"
-                  name="f27"
-                  placeholder="position"
+                  name="f10a"
+                  placeholder="Location"
                   onChange={this.handleChange}
                 />
               </Box>
               <Box>
-                <FormLabel htmlFor="f28">
-                  Stabilizers operating at time of incident
+                <FormLabel htmlFor="f3">Next Port Scheduled</FormLabel>
+                <SimpleGrid width="100%" columns={2}>
+                  <Input
+                    type="date"
+                    name="f3a"
+                    placeholder="name"
+                    onChange={this.handleChange}
+                  />
+                  <Input
+                    marginLeft="5px"
+                    type="time"
+                    name="f3b"
+                    placeholder="name"
+                    onChange={this.handleChange}
+                  />
+                </SimpleGrid>
+              </Box>
+              <Box>
+                <FormLabel htmlFor="f3">Next US Port Scheduled</FormLabel>
+                <SimpleGrid width="100%" columns={2}>
+                  <Input
+                    type="date"
+                    name="f3a"
+                    placeholder="name"
+                    onChange={this.handleChange}
+                  />
+                  <Input
+                    marginLeft="5px"
+                    type="time"
+                    name="f3b"
+                    placeholder="name"
+                    onChange={this.handleChange}
+                  />
+                </SimpleGrid>
+              </Box>
+              <Box>
+                <FormLabel htmlFor="f3">Embarkation Port and Date</FormLabel>
+                <SimpleGrid width="100%" columns={2}>
+                  <Input
+                    type="date"
+                    name="f3a"
+                    placeholder="name"
+                    onChange={this.handleChange}
+                  />
+                  <Input
+                    marginLeft="5px"
+                    type="time"
+                    name="f3b"
+                    placeholder="name"
+                    onChange={this.handleChange}
+                  />
+                </SimpleGrid>
+              </Box>
+              <Box>
+                <FormLabel htmlFor="f3">Disembarkation Port and Date</FormLabel>
+                <SimpleGrid width="100%" columns={2}>
+                  <Input
+                    type="date"
+                    name="f3a"
+                    placeholder="name"
+                    onChange={this.handleChange}
+                  />
+                  <Input
+                    marginLeft="5px"
+                    type="time"
+                    name="f3b"
+                    placeholder="name"
+                    onChange={this.handleChange}
+                  />
+                </SimpleGrid>
+              </Box>
+              <Box>
+                <FormLabel htmlFor="f6">
+                  Number of pax and crew onboard
                 </FormLabel>
-                <Select name="f28" onChange={this.handleChange}>
+                <SimpleGrid width="100%" columns={2}>
+                  <Input
+                    name="f6a"
+                    placeholder="Pax Onboard"
+                    onChange={this.handleChange}
+                  />
+                  <Input
+                    marginLeft="5px"
+                    name="f6b"
+                    placeholder="Crew  Onboard"
+                    onChange={this.handleChange}
+                  />
+                </SimpleGrid>
+              </Box>
+              <Box>
+                <FormLabel htmlFor="f10">Charter / Special Group</FormLabel>
+                <Input
+                  name="f10a"
+                  placeholder="Group"
+                  onChange={this.handleChange}
+                />
+              </Box>
+              <Box>
+                <FormLabel htmlFor="f9">Voyage Destination</FormLabel>
+                <Select name="f9" onChange={this.handleChange}>
                   <option value="0" isDisabled>
                     Please select...
                   </option>
-                  <option value="Yes">Yes</option>
-                  <option value="No">No</option>
+                  <option value="Miami">Miami</option>
+                  <option value="Genoa">Genoa</option>
+                  <option value="Bimini">Bimini</option>
                 </Select>
               </Box>
               <Box>
-                <FormLabel htmlFor="f29">
-                  Weather at the time of incident:
-                </FormLabel>
+                <FormLabel htmlFor="f10">Voyage Length</FormLabel>
                 <Input
-                  name="f29"
-                  placeholder="position"
+                  name="f10a"
+                  placeholder="Length"
                   onChange={this.handleChange}
+                />
+              </Box>
+              <Box gridColumn="span 2">
+                <FormLabel htmlFor="f14">Incident Synopsis</FormLabel>
+                <Textarea
+                  name="f14"
+                  onChange={this.handleChange}
+                  placeholder="Describe the incident"
                 />
               </Box>
             </SimpleGrid>
