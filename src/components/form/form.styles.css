@@ -33,3 +33,16 @@ form {
     justify-items: center;
     justify-content: center;
   }
+
+  .accordionStyle {
+      background-color: white;
+      
+  }
+
+  .accordionStyle:hover{
+      background-color: #fffffff2 !important;
+  }
+
+  .accordionStyle[aria-expanded="true"]:hover{
+    background-color: #0682f7 !important;
+  }
