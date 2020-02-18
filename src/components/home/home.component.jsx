@@ -14,7 +14,7 @@ export default function Home() {
       height="20rem"
     >
       <Heading className="arsTitle" fontWeight={100}>
-        Accident Report System
+      Centralized Reporting System
       </Heading>
       <Box className="homeCenter">
         <SimpleGrid columns={2} display="flex">

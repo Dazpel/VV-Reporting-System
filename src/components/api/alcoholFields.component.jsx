@@ -5,9 +5,7 @@ function drugsArray(val) {
     switch (a) {
       case 'Yes':
         filterData = [
-          'How were those obtained',
-          'explain any condition that contributed to the incident',
-          
+          'How were the drugs/alcohol obtained?',      
         ];
         break;
   

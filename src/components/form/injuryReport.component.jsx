@@ -40,13 +40,13 @@ export default class injuryReport extends Component {
     //console.log(key);
     localStorage.setItem('document', JSON.stringify(this.state));
     //alert("Form key identifier is: "+ key + ".  Use this identifier if you want to retrieve this data later");
-    //document.getElementById('personalInjury').reset();
+    //document.getElementById('injuryReport').reset();
   }
 
   // React Life Cycle
   componentDidMount() {
     this.documentData = JSON.parse(localStorage.getItem('document'));
-    let form = document.getElementById('personalInjury');
+    let form = document.getElementById('injuryReport');
     let formElements = form.elements;
 
     if (localStorage.key('document')) {
@@ -61,7 +61,7 @@ export default class injuryReport extends Component {
 
   clearState() {
     localStorage.clear();
-    document.getElementById('personalInjury').reset();
+    document.getElementById('injuryReport').reset();
   }
 
   render() {
@@ -71,7 +71,7 @@ export default class injuryReport extends Component {
 
     return (
       <Box margin="2rem">
-        <form onSubmit={this.handleFormSubmit} id="personalInjury">
+        <form onSubmit={this.handleFormSubmit} id="injuryReport">
           <FormControl>
             <SimpleGrid
               id="mainGrid"
@@ -207,7 +207,7 @@ export default class injuryReport extends Component {
               <Box>
                 <FormLabel htmlFor="f10">Specific Incident Location</FormLabel>
                 <Input
-                  name="f11"
+                  name="f10"
                   placeholder="eg. Shower inside crew cabin 23341"
                   onChange={this.handleChange}
                 />
@@ -216,7 +216,7 @@ export default class injuryReport extends Component {
                 <FormLabel htmlFor="f12">
                   Did the incident involve any Equipment
                 </FormLabel>
-                <Select name="f13" onChange={this.handleChange}>
+                <Select name="f12" onChange={this.handleChange}>
                   <option value="0" isDisabled>
                     Please select...
                   </option>
@@ -247,7 +247,7 @@ export default class injuryReport extends Component {
                 </Select>
               </Box>
               <Box>
-                <FormLabel htmlFor="f16">
+                <FormLabel htmlFor="f17">
                   Person in charge of this inspetion
                 </FormLabel>
                 <SimpleGrid width="100%" columns={2}>

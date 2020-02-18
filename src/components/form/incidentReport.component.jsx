@@ -41,7 +41,7 @@ export default class incidentReport extends Component {
       mainAllegation: '',
       specificAllegation: '',
       lawEnforcement: '',
-      alcoholDrugsInvolved: '',
+      alcoholDrugsInvolved: ''
     };
   }
 
@@ -76,10 +76,10 @@ export default class incidentReport extends Component {
       case 'f8':
         this.setState({ specificAllegation: e.target.value });
         break;
-        case 'f9':
+      case 'f9':
         this.setState({ alcoholDrugsInvolved: e.target.value });
         break;
-        case 'f30':
+      case 'f30':
         this.setState({ lawEnforcement: e.target.value });
         break;
 
@@ -97,13 +97,13 @@ export default class incidentReport extends Component {
 
     localStorage.setItem('document', JSON.stringify(this.state));
     //alert("Form key identifier is: "+ key + ".  Use this identifier if you want to retrieve this data later");
-    //document.getElementById('personalInjury').reset();
+    //document.getElementById('incidentReport').reset();
   }
 
   // React Life Cycle
   componentDidMount() {
     this.documentData = JSON.parse(localStorage.getItem('document'));
-    let form = document.getElementById('personalInjury');
+    let form = document.getElementById('incidentReport');
     let formElements = form.elements;
 
     if (localStorage.key('document')) {
@@ -118,7 +118,7 @@ export default class incidentReport extends Component {
 
   clearState() {
     localStorage.clear();
-    document.getElementById('personalInjury').reset();
+    document.getElementById('incidentReport').reset();
   }
 
   render() {
@@ -155,10 +155,10 @@ export default class incidentReport extends Component {
 
     return (
       <Box margin="2rem">
-        <form onSubmit={this.handleFormSubmit} id="personalInjury">
+        <form onSubmit={this.handleFormSubmit} id="incidentReport">
           <FormControl>
             <Accordion defaultIndex={[0]} allowMultiple>
-
+              
               <AccordionItem>
                 <AccordionHeader
                   className="accordionStyle"
@@ -416,7 +416,9 @@ export default class incidentReport extends Component {
                       </SimpleGrid>
                     </Box>
                     <Box>
-                      <FormLabel htmlFor="f15">Next US Port Scheduled</FormLabel>
+                      <FormLabel htmlFor="f15">
+                        Next US Port Scheduled
+                      </FormLabel>
                       <SimpleGrid width="100%" columns={2}>
                         <Input
                           type="date"
@@ -584,19 +586,18 @@ export default class incidentReport extends Component {
                       </Select>
                     </Box>
 
-                    {(this.state.lawEnforcement !== '')
-                      ? (lawFields(this.state.lawEnforcement).map((x, y) => (
+                    {this.state.lawEnforcement !== ''
+                      ? lawFields(this.state.lawEnforcement).map((x, y) => (
                           <Box key={y}>
-                            <FormLabel htmlFor={"30" + y}>{x}</FormLabel>
+                            <FormLabel htmlFor={'30' + y}>{x}</FormLabel>
                             <Input
-                              name={"30" + y}
+                              name={'30' + y}
                               placeholder={x}
                               onChange={this.handleChange}
                             />
                           </Box>
-                        )))
+                        ))
                       : console.log('Nothing Here')}
-
                   </SimpleGrid>
                 </AccordionPanel>
               </AccordionItem>
@@ -616,32 +617,73 @@ export default class incidentReport extends Component {
                   <AccordionIcon />
                 </AccordionHeader>
                 <AccordionPanel pb={4}>
-                <SimpleGrid
+                  <SimpleGrid
                     id="mainGrid"
                     minChildWidth="315px"
                     spacing={10}
                     columns={2}
                     bg="white"
                   >
-                    
-
-                    {
-                    
-                    (this.state.alcoholDrugsInvolved === 'Yes')
-                      ? (alcoholFields(this.state.alcoholDrugsInvolved).map((x, y) => (
-                          <Box key={y}>
-                            <FormLabel htmlFor={"40" + y}>{x}</FormLabel>
-                            <Input
-                              name={"40" + y}
-                              placeholder={x}
-                              onChange={this.handleChange}
-                            />
-                          </Box>
-                        )))
-                      :  <Text>No Drugs or Alcohol Involved</Text>
-                      
-                      }
-
+                    {this.state.alcoholDrugsInvolved === 'Yes' ? (
+                      <>
+                        <Box>
+                          <FormLabel htmlFor="f40">Victim</FormLabel>
+                          <Input
+                            name="f40"
+                            placeholder="Name"
+                            onChange={this.handleChange}
+                          />
+                        </Box>
+                        {alcoholFields(this.state.alcoholDrugsInvolved).map(
+                          (x, y) => (
+                            <Box key={y}>
+                              <FormLabel htmlFor={'f4' + y + 'a'}>
+                                {x}
+                              </FormLabel>
+                              <Input
+                                name={'f4' + y + 'a'}
+                                placeholder={x}
+                                onChange={this.handleChange}
+                              />
+                            </Box>
+                          )
+                        )}
+                        <Box>
+                          <FormLabel htmlFor="f41">Suspect</FormLabel>
+                          <Input
+                            name="f41"
+                            placeholder="Name"
+                            onChange={this.handleChange}
+                          />
+                        </Box>
+                        {alcoholFields(this.state.alcoholDrugsInvolved).map(
+                          (x, y) => (
+                            <Box key={y}>
+                              <FormLabel htmlFor={'f4' + y + 'b'}>
+                                {x}
+                              </FormLabel>
+                              <Input
+                                name={'f4' + y + 'b'}
+                                placeholder={x}
+                                onChange={this.handleChange}
+                              />
+                            </Box>
+                          )
+                        )}
+                        <Box gridColumn="span 2">
+                          <FormLabel htmlFor="f42">
+                            Additional Conditions
+                          </FormLabel>
+                          <Textarea
+                            name="f42"
+                            placeholder="additionals conditions that contributed to incident"
+                            onChange={this.handleChange}
+                          />
+                        </Box>
+                      </>
+                    ) : (
+                      <Text>No Drugs or Alcohol Involved</Text>
+                    )}
                   </SimpleGrid>
                 </AccordionPanel>
               </AccordionItem>
@@ -661,10 +703,72 @@ export default class incidentReport extends Component {
                   <AccordionIcon />
                 </AccordionHeader>
                 <AccordionPanel pb={4}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat.
+                  <SimpleGrid
+                    id="mainGrid"
+                    minChildWidth="315px"
+                    spacing={10}
+                    columns={2}
+                    bg="white"
+                  >
+                    <Box>
+                      <FormLabel htmlFor="f50">Name</FormLabel>
+                      <SimpleGrid width="100%" columns={2}>
+                        <Input
+                          name="f50a"
+                          placeholder="first name"
+                          onChange={this.handleChange}
+                        />
+                        <Input
+                          marginLeft="5px"
+                          name="f50b"
+                          placeholder="last name"
+                          onChange={this.handleChange}
+                        />
+                      </SimpleGrid>
+                    </Box>
+                    <Box>
+                      <FormLabel htmlFor="f51">Role in Incident</FormLabel>
+                      <Select name="f51" onChange={this.handleChange}>
+                        <option value="0" isDisabled>
+                          Please select...
+                        </option>
+                        <option value="Victim">Victim</option>
+                        <option value="Suspect">Suspect</option>
+                        <option value="Witness">Witness</option>
+                        <option value="Other">Other</option>
+                      </Select>
+                    </Box>
+                    <Box>
+                      <FormLabel htmlFor="f52">Action taken for them</FormLabel>
+                      <Input
+                        name="f52"
+                        placeholder="action taken"
+                        onChange={this.handleChange}
+                      />
+                    </Box>
+                    <Box>
+                      <FormLabel htmlFor="f53">Nationality</FormLabel>
+                      <Select name="f53" onChange={this.handleChange}>
+                        <option value="0" isDisabled>
+                          Please select...
+                        </option>
+                      </Select>
+                    </Box>
+                    <Box>
+                      <FormLabel htmlFor="f54">Gender</FormLabel>
+                      <Select name="f54" onChange={this.handleChange}>
+                        <option value="0" isDisabled>
+                          Please select...
+                        </option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Declined to Answer">
+                          Declined to Answer
+                        </option>
+                      </Select>
+                    </Box>
+                    
+                  </SimpleGrid>
                 </AccordionPanel>
               </AccordionItem>
 
@@ -683,15 +787,145 @@ export default class incidentReport extends Component {
                   <AccordionIcon />
                 </AccordionHeader>
                 <AccordionPanel pb={4}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat.
+                <SimpleGrid
+                    id="mainGrid"
+                    minChildWidth="315px"
+                    spacing={10}
+                    columns={2}
+                    bg="white"
+                  >
+                    <Box>
+                      <FormLabel htmlFor="f60">Name</FormLabel>
+                      <SimpleGrid width="100%" columns={2}>
+                        <Input
+                          name="f60a"
+                          placeholder="first name"
+                          onChange={this.handleChange}
+                        />
+                        <Input
+                          marginLeft="5px"
+                          name="f60b"
+                          placeholder="last name"
+                          onChange={this.handleChange}
+                        />
+                      </SimpleGrid>
+                    </Box>
+                    <Box>
+                      <FormLabel htmlFor="f61">Role in Incident</FormLabel>
+                      <Select name="f61" onChange={this.handleChange}>
+                        <option value="0" isDisabled>
+                          Please select...
+                        </option>
+                        <option value="Victim">Victim</option>
+                        <option value="Suspect">Suspect</option>
+                        <option value="Witness">Witness</option>
+                        <option value="Other">Other</option>
+                      </Select>
+                    </Box>
+                    <Box>
+                      <FormLabel htmlFor="f62">Action taken for them</FormLabel>
+                      <Input
+                        name="f62"
+                        placeholder="action taken"
+                        onChange={this.handleChange}
+                      />
+                    </Box>
+                    <Box>
+                      <FormLabel htmlFor="f63">Nationality</FormLabel>
+                      <Select name="f63" onChange={this.handleChange}>
+                        <option value="0" isDisabled>
+                          Please select...
+                        </option>
+                      </Select>
+                    </Box>
+                    <Box>
+                      <FormLabel htmlFor="f64">Gender</FormLabel>
+                      <Select name="f64" onChange={this.handleChange}>
+                        <option value="0" isDisabled>
+                          Please select...
+                        </option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Declined to Answer">
+                          Declined to Answer
+                        </option>
+                      </Select>
+                    </Box>
+                    <Box>
+                      <FormLabel htmlFor="f65">Date of Birth</FormLabel>
+                      <Input
+                        type="date"
+                        name="f65"
+                        placeholder="action taken"
+                        onChange={this.handleChange}
+                      />
+                    </Box>
+                    <Box>
+                      <FormLabel htmlFor="f66">Cabin Number</FormLabel>
+                      <Input
+                        name="f66"
+                        type="number"
+                        min="0"
+                        placeholder="number"
+                        onChange={this.handleChange}
+                      />
+                    </Box>
+                    <Box>
+                      <FormLabel htmlFor="f67">Speaks English?</FormLabel>
+                      
+                      <Select name="f67" onChange={this.handleChange}>
+                        <option value="0" isDisabled>
+                          Please select...
+                        </option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                      </Select>
+                    </Box>
+                    <Box>
+                      <FormLabel htmlFor="f68">Other Language?</FormLabel>
+                      
+                      <Select name="f68" onChange={this.handleChange}>
+                        <option value="0" isDisabled>
+                          Please select...
+                        </option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                      </Select>
+                    </Box>
+                    <Box>
+                      <FormLabel htmlFor="f69">PP Number</FormLabel>
+                      <Input
+                        name="f69"
+                        type="number"
+                        min="0"
+                        placeholder="PP number"
+                        onChange={this.handleChange}
+                      />
+                    </Box>
+                    <Box>
+                      <FormLabel htmlFor="f610">Crew: ID and Position</FormLabel>
+                      <SimpleGrid width="100%" columns={2}>
+                        <Input
+                          name="f610a"
+                          type='number'
+                          min='0'
+                          placeholder="ID#"
+                          onChange={this.handleChange}
+                        />
+                        <Input
+                          marginLeft="5px"
+                          name="f610b"
+                          placeholder="Position"
+                          onChange={this.handleChange}
+                        />
+                      </SimpleGrid>
+                    </Box>
+                  </SimpleGrid>
                 </AccordionPanel>
               </AccordionItem>
-            
             </Accordion>
           </FormControl>
+
           <SimpleGrid columns={3} width="100%" className="btnToCenter">
             <ButtonSucess type="submit" />
             <Button onClick={print} className="btnBasic" variantColor="blue">
@@ -705,6 +939,7 @@ export default class incidentReport extends Component {
               Clear Form
             </Button>
           </SimpleGrid>
+
         </form>
       </Box>
     );
