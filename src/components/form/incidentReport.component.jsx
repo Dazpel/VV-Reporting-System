@@ -47,10 +47,15 @@ export default class incidentReport extends Component {
     switch (e.target.name) {
       case 'f7':
         if (
-          e.target.value === 'Missing Person' ||
-          'Sexual Assault' ||
+          e.target.value === 'Sexual Assault' ||
           'Sexual Assault - Rape' ||
-          'Sexual Touching'
+          'Sexual Touching' ||
+          'Jump Ship - Crew' ||
+          'Jump Ship - Passenger' ||
+          'Missed ship in port - Missing ashore' ||
+          'Missing on Turnaround - Access control system' ||
+          'Not located after 60 minutes of initial report' ||
+          'Man Overboard'
         ) {
           this.setState({ mainAllegation: e.target.value });
           this.setState({ specificAllegation: e.target.value });
@@ -109,7 +114,15 @@ export default class incidentReport extends Component {
     function checkState(state) {
       let checkMe = [
         'Counterfeit Currency Fraud',
-        'Missing Person',
+        'Sexual Assault',
+        'Sexual Assault - Rape',
+        'Sexual Touching',
+        'Jump Ship - Crew',
+        'Jump Ship - Passenger',
+        'Missed ship in port - Missing ashore',
+        'Missing on Turnaround - Access control system',
+        'Not located after 60 minutes of initial report',
+        'Man Overboard',
         'Sexual Assault',
         'Sexual Assault - Rape',
         'Sexual Touching'
@@ -188,6 +201,7 @@ export default class incidentReport extends Component {
                   <option value="Crew">Crew</option>
                   <option value="Passenger">Passenger</option>
                   <option value="Vendor">Vendor</option>
+                  <option value="Other">Other</option>
                 </Select>
               </Box>
 
@@ -241,7 +255,6 @@ export default class incidentReport extends Component {
                 </Select>
               </Box>
 
-
               <Box>
                 <FormLabel htmlFor="f8">Specific Incident Allegation</FormLabel>
                 <Select
@@ -260,8 +273,6 @@ export default class incidentReport extends Component {
                 </Select>
               </Box>
 
-
-
               {checkState(this.state.specificAllegation)
                 ? ((allegationInputs = extraAllegationArray(
                     this.state.specificAllegation
@@ -279,6 +290,33 @@ export default class incidentReport extends Component {
                 : console.log('Nothing Here')}
 
 
+<Box>
+                <FormLabel htmlFor="f9">Did the incident involve any property/alcohol/drugs</FormLabel>
+                <Select name="f9" onChange={this.handleChange}>
+                  <option value="0" isDisabled>
+                    Please select...
+                  </option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </Select>
+              </Box>
+              
+
+              <Box>
+                <FormLabel htmlFor="f9">Primary incident location</FormLabel>
+                <Select name="f9" onChange={this.handleChange}>
+                  <option value="0" isDisabled>
+                    Please select...
+                  </option>
+                  <option value="Public Pax Area">Public Pax Area</option>
+                  <option value="Crew Area">Crew Area</option>
+                  <option value="Pax/Crew Cabin">Pax/Crew Cabin</option>
+                  <option value="Ashore">Ashore</option>
+                  <option value="Other">Other</option>
+                </Select>
+              </Box>
+              
+
 
               <Box>
                 <FormLabel htmlFor="f9">Ship Location</FormLabel>
@@ -291,12 +329,32 @@ export default class incidentReport extends Component {
                 </Select>
               </Box>
               <Box>
-                <FormLabel htmlFor="f10">Specific Location</FormLabel>
+                <FormLabel htmlFor="f10">Nearest point of Land and Distance from it</FormLabel>
                 <Input
+                type='number'
+                min="0"
                   name="f10a"
-                  placeholder="Location"
+                  placeholder="Nautical Miles"
                   onChange={this.handleChange}
                 />
+              </Box>
+              <Box>
+                <FormLabel htmlFor="f3">LON/LAT</FormLabel>
+                <SimpleGrid width="100%" columns={2}>
+                  <Input
+                    
+                    name="f3a"
+                    placeholder="LON"
+                    onChange={this.handleChange}
+                  />
+                  <Input
+                    marginLeft="5px"
+                   
+                    name="f3b"
+                    placeholder="LAT"
+                    onChange={this.handleChange}
+                  />
+                </SimpleGrid>
               </Box>
               <Box>
                 <FormLabel htmlFor="f3">Next Port Scheduled</FormLabel>
@@ -376,11 +434,15 @@ export default class incidentReport extends Component {
                 </FormLabel>
                 <SimpleGrid width="100%" columns={2}>
                   <Input
+                  type="number"
+                  min="0"
                     name="f6a"
                     placeholder="Pax Onboard"
                     onChange={this.handleChange}
                   />
                   <Input
+                  type="number"
+                  min="0"
                     marginLeft="5px"
                     name="f6b"
                     placeholder="Crew  Onboard"

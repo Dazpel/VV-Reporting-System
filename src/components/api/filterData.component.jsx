@@ -1,5 +1,3 @@
-
-
 function allegationFilter(val) {
   let a = val;
   let filterData = [];
@@ -15,6 +13,12 @@ function allegationFilter(val) {
       ];
       break;
     case 'Missing Person':
+    case 'Jump Ship - Crew':
+    case 'Jump Ship - Passenger':
+    case 'Missed ship in port - Missing ashore':
+    case 'Missing on Turnaround - Access control system':
+    case 'Not located after 60 minutes of initial report':
+    case 'Man Overboard':
       filterData = ['Was the person found?', 'Exact Location'];
       break;
     case 'Sexual Assault':
@@ -38,9 +42,7 @@ function allegationFilter(val) {
 }
 
 function extraAllegationArray(val) {
-
   return allegationFilter(val);
-
 }
 
 export default extraAllegationArray;
