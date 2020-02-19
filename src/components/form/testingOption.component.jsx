@@ -153,3 +153,6 @@ function mapOptions(val) {
 }
 
 export default mapOptions;
+
+Object.entries(lawFields(this.state.lawEnforcement))
+                      .map((obj)=>obj.map((objs, y)=>(console.log(objs, y))))

@@ -24,6 +24,8 @@ import allegationArray from '../api/data.component';
 import extraAllegationArray from '../api/filterData.component';
 import lawFields from '../api/lawFields.component';
 import alcoholFields from '../api/alcoholFields.component';
+import Nations from '../api/nations.component';
+
 
 var uniqid = require('uniqid');
 //let currentDate = dayjs().format();
@@ -149,6 +151,19 @@ export default class incidentReport extends Component {
       checkMe.indexOf(state) !== -1 ? (a = true) : (a = false);
 
       return a;
+    }
+
+    function arrLaw (state) {
+      let x = '';
+
+      if (state !==''){
+        x = Object.values(lawFields(state));
+      } else {
+         x = 'No data'
+      }
+
+      return x;
+      
     }
 
     let allegationInputs = [];
@@ -586,18 +601,24 @@ export default class incidentReport extends Component {
                       </Select>
                     </Box>
 
-                    {this.state.lawEnforcement !== ''
-                      ? lawFields(this.state.lawEnforcement).map((x, y) => (
-                          <Box key={y}>
-                            <FormLabel htmlFor={'30' + y}>{x}</FormLabel>
-                            <Input
-                              name={'30' + y}
-                              placeholder={x}
-                              onChange={this.handleChange}
-                            />
-                          </Box>
-                        ))
-                      : console.log('Nothing Here')}
+
+                    {
+                      (this.state.lawEnforcement!== '')
+                      ? arrLaw(this.state.lawEnforcement).map((x,y)=>(
+                        
+                        <Box key={x.key}>
+                          <FormLabel htmlFor={"f3"+y}>{x.name}</FormLabel>
+                          <Input
+                          name={"f3"+y}
+                          type={x.type}
+                          placeholder={x.placeholder}
+                          />
+                        </Box>
+
+                      ))
+                      : console.log('No data')
+                    }
+
                   </SimpleGrid>
                 </AccordionPanel>
               </AccordionItem>
@@ -752,6 +773,7 @@ export default class incidentReport extends Component {
                         <option value="0" isDisabled>
                           Please select...
                         </option>
+                        {Nations.map((x,y) => (<option key={y}>{x}</option>))}
                       </Select>
                     </Box>
                     <Box>
@@ -836,6 +858,7 @@ export default class incidentReport extends Component {
                         <option value="0" isDisabled>
                           Please select...
                         </option>
+                        {Nations.map((x,y) => (<option key={y}>{x}</option>))}
                       </Select>
                     </Box>
                     <Box>
